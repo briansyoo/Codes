@@ -26,7 +26,7 @@ same property or this script will not work properly.
 
 Example Usage:
 
-./plot.py RUN_NAME.box1.prp1 RUN_NAME.box2.prp1
+./plot.py test.prp
 
 
 ''', formatter_class=RawTextHelpFormatter)
