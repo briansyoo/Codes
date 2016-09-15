@@ -32,14 +32,11 @@ def find_neighbors(alive,points):
         if d <=dcut and i != alive:
             if i not in clusters:
                 clusters.append(i)
-                neighbors.append(i)
-        #once end of loop is reached
-        if i ==(len(points)-1):
-            #loop through neighbor indices recursively
-            for j in neighbors:
-                find_neighbors(j,points)        
+                neighbors.append(i)   
         else:
             continue
+    for j in neighbors:
+        find_neighbors(j,points)
         
     return
 

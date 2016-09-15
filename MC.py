@@ -2,7 +2,8 @@
 """
 Created on Thu Apr 25 17:59:18 2013
 
-This code runs Metropolis MC simulation for liquid argon.
+This code runs Metropolis MC simulation for liquid argon. It was written
+when I first started grad school, and also when I was learning to code.
 This code is intended for learning purposes and has not been optimized.
 (Some bugs are known to exist in this code.)
 @author: byoo1

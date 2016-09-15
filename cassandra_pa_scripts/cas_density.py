@@ -13,7 +13,7 @@ import readfiles
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-parser = argparse.ArgumentParser('''Density Profile Analysis Tool
+parser = argparse.ArgumentParser('''*** CASSANDRA Density Profile Analysis Tool ***
 
 Example Usage:
 

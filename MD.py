@@ -3,7 +3,8 @@
 """
 @author: byoo1
 
-This code runs MD simulation for liquid argon.
+This code runs MD simulation for liquid argon. It was written
+when I first started grad school, and also when I was learning to code. 
 This code is intended for learning purposes and has not been optimized.
 """
 import numpy as np #for fast array operations

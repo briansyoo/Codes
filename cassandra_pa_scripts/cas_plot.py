@@ -7,17 +7,9 @@ from argparse import RawTextHelpFormatter
 
 """
 ***************************************************************************************************
-This script can be used to visualize your output property files. It  will print out the block
-average properties and errors. For multiple property files, the output columns must be the
-same property or this script will not work properly.
-
 Requirements:
 python 2.7.x
 matplotlib 1.x
-
-Example Usage:
-
-python plot.py RUN_NAME.box1.prp1 RUN_NAME.box2.prp1 -skip NUM_LINES -setx -block NUM_BLOCKS  -lg 0
 
 Help:
 python plot.py -h
@@ -26,7 +18,18 @@ python plot.py -h
 """
 
 
-parser = argparse.ArgumentParser("Plots data files for identical output columns", formatter_class=RawTextHelpFormatter)
+parser = argparse.ArgumentParser('''*** CASSANDRA Plotting Tool ***
+Plots user specified output from Cassandra Property File
+It  will print out the block average properties and errors. 
+For multiple property files, the output columns must be the
+same property or this script will not work properly.
+
+Example Usage:
+
+./plot.py RUN_NAME.box1.prp1 RUN_NAME.box2.prp1
+
+
+''', formatter_class=RawTextHelpFormatter)
 parser.add_argument('file',nargs = '+', action='store',help='enter filename')
 parser.add_argument('-skip', action ='store', help='Number lines to skip', default=1)
 parser.add_argument('-block', action='store', help='Number of blocks for block averaging', default = 5)
