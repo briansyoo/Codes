@@ -2,9 +2,9 @@
 !FILE: cas_palib.f90
 
 
-SUBROUTINE CAS_DENSITY(xyzfile,nslices, nspecies, nframes, &
+SUBROUTINE CAS_DENSITY(xyzfile, nslices, nspecies, nframes, begin_frame, end_frame, &
 						Lx, Ly, Lz, &
-						 atype_mass, max_natoms, &
+						atype_mass, max_natoms, &
 						natoms, nmolecules_array, density)
 !**************************************************************************
 !Routine to obtain the density profile along a cartesian axis
@@ -14,6 +14,8 @@ SUBROUTINE CAS_DENSITY(xyzfile,nslices, nspecies, nframes, &
 !		nslices - number of slices to bin along the cartesian axis
 !		nspecies - number of species contained in the system
 !		nframes - number of frames we are analyzing
+!		begin_frame - beginning frame index
+!		end_frame - ending_frame index
 !		REALS:
 !		binwidth
 !		ARRAYS:
@@ -26,7 +28,7 @@ SUBROUTINE CAS_DENSITY(xyzfile,nslices, nspecies, nframes, &
 !**************************************************************************
 IMPLICIT NONE
 CHARACTER(120), INTENT(IN) :: xyzfile
-INTEGER, INTENT(IN) :: nslices, nspecies, nframes, max_natoms
+INTEGER, INTENT(IN) :: nslices, nspecies, nframes, max_natoms, begin_frame, end_frame
 REAL, INTENT(IN), DIMENSION(0:nframes-1) :: Lx, Ly, Lz
 !f2py depend(nframes) :: Lx, Ly, Lz
 REAL,INTENT(IN), DIMENSION(0:max_natoms-1,0:nspecies-1) :: atype_mass
@@ -47,8 +49,7 @@ conv = 1660.54!amu/Angstrom^3 to kg/m^3
 OPEN(unit=5,file=xyzfile)
 
 !loop over #frames
-
-DO i=0,nframes-1
+DO i=begin_frame,end_frame-1
 	!first 2 lines is molecule #, and newline
 	READ(*,*)
 	READ(*,*)
@@ -69,7 +70,7 @@ DO i=0,nframes-1
 
 END DO
 CLOSE(unit = 5)
-density = density/nframes*conv
+density = density/(end_frame-begin_frame)*conv
 
 END SUBROUTINE
 

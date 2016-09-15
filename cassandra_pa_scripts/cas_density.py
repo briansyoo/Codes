@@ -13,26 +13,36 @@ import readfiles
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-parser = argparse.ArgumentParser("Density Profile Analysis Tool",formatter_class=RawTextHelpFormatter)
+parser = argparse.ArgumentParser('''Density Profile Analysis Tool
+
+Example Usage:
+
+	python cas_density -f test.xyz -m s1.mcf s2.mcf -o out.xvg
+
+''',formatter_class=RawTextHelpFormatter)
 parser.add_argument('-f',action='store',help ='Trajectory File (xyz format)')
 parser.add_argument('-m',nargs = '+',action = 'store', help='MCF file(s) for each species. Must be in correct order.')
 parser.add_argument('-H',action='store',help='Optional: H Matrix File (specify only if file name without extension is different from xyz file name)',default = 'default')
 parser.add_argument('-nsl',action='store',help='Optional: Number of slices (default = 100)',default = 100,type =int)
 parser.add_argument('-dim',action='store',help='Optional: Axis to analyze (default is Z-axis)',default = 'Z')
-parser.add_argument('-b',action='store',help='Optional: Beginning frame (default = 1)', default = 0)
-parser.add_argument('-e',action='store',help='Optional: Ending frame (default=last frame)', default=-1)
+parser.add_argument('-b',action='store',help='Optional: Beginning frame (default = 1)', default = 1, type=int)
+parser.add_argument('-e',action='store',help='Optional: Ending frame (default=last frame)', default=0,type=int)
 parser.add_argument('-o',action='store',help='Optional: Output file name',default='density.xvg')
+parser.add_argument('-atom',action='store_true',help='Optional (Boolean): Output atom density profile (default is mass)', default=False)
+
 #DEFINE PARSER ARGS
 args = parser.parse_args()
 nslices = int(args.nsl)
 nspecies = len(args.m)
 xyzfile = args.f
+atom_flag = args.atom
+
 if args.H == 'default':
 	Hfile = xyzfile[:-4]+'.H'
 else:
 	Hfile = args.H
-begin_frame = args.b
-end_frame = args.e
+begin_frame = args.b-1
+end_frame = args.e-1
 outfile = args.o
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -79,6 +89,15 @@ binwidth = np.mean(Lz_array)/nslices
 
 #Store number of frames
 nframes = int(len(H[3])/nspecies)
+if end_frame == -1:
+	end_frame = nframes
+
+if (begin_frame > nframes) or (end_frame > nframes):
+	print "Error: Beginning or ending frame is larger than the total number of frames ("+str(nframes)+")"
+	quit()
+elif (begin_frame < 0) or (end_frame < 0):
+	print "Error: Specified frames are outside of bounds"
+	quit()
 
 #Construct matrix that contains number of each species for each frame
 nmolecules_array = np.reshape(H[3],(nframes,nspecies))
@@ -131,7 +150,10 @@ atype_mass = np.zeros((max_natoms,nspecies))
 for i in range(nspecies):
 	for j in range(max_natoms):
 		try:
-			atype_mass[j][i] = float(molecule_info[i].mass[j]) #convert to kg
+			if atom_flag == False:
+				atype_mass[j][i] = float(molecule_info[i].mass[j]) #convert to kg
+			else:
+				atype_mass[j][i] = 1.0
 		except:
 			pass
 
@@ -154,6 +176,8 @@ density = cas_palib.cas_density(xyzfile,
 								nslices,
 								nspecies,
 								nframes,
+								begin_frame,
+								end_frame,
 								Lx_array,Ly_array, Lz_array,
 								atype_mass,max_natoms, 
 								natoms, nmolecules_array,density)
@@ -169,7 +193,10 @@ for i in range(nslices):
 	outfilew.write(outfmt%(Lzw[i],density[i]))
 	print soutfmt%Lzw[i],soutfmt%density[i]
 outfilew.close()
-print "Average Density [kg/m^3]:\n"
+if atom_flag ==False:
+	print "Average Density [kg/m^3]:\n"
+elif atom_flag ==True:
+	print "Average Density [#/m^3]:\n"
 print np.average(density)
 
 #PLOT RESULTS INTO FIGURE
