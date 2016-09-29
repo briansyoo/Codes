@@ -27,7 +27,7 @@ def obtain_indices(output_ndx):
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-parser = argparse.ArgumentParser('''*** CASSANDRA Density Profile Analysis Tool ***
+parser = argparse.ArgumentParser('''*** CASSANDRA Radial Distribution Function Analysis Tool ***
 
 Example Usage:
 
