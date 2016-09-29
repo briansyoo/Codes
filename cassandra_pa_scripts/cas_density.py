@@ -1,4 +1,4 @@
-#!/afs/crc.nd.edu/x86_64_linux/python/2.7.4/bin/python
+#!/afs/crc.nd.edu/x86_64_linux/p/python/2.7.11/gcc/4.9.2/bin/python
 
 import numpy as np
 import argparse
@@ -85,7 +85,7 @@ Ly_array = H[1]
 Lz_array = H[2]
 
 #Take the binwidth from the the average length over all frames divided by nslices
-binwidth = np.mean(Lz_array)/nslices
+binwidth = np.mean(Lz_array[begin_frame:end_frame])/nslices
 
 #Store number of frames
 nframes = int(len(H[3])/nspecies)
@@ -120,10 +120,12 @@ output_ndx = int(raw_input())-1
 
 #Check if we want to calculate total density profile or not
 if output_ndx==-1:
+	outname = "System"
 	print "\nObtaining total system density profile\n"
 	calc_tot_flag = True 
 else:
-	print '\n'+"Obtaining density profile for "+molecule_info[output_ndx].name
+	outname = molecule_info[output_ndx].name
+	print '\n'+"Obtaining density profile for "+outname
 print "\n"
 
 
@@ -187,6 +189,10 @@ density = cas_palib.cas_density(xyzfile,
 Lzw = np.arange(0,nslices,1)*np.average(Lz_array)/nslices -np.average(Lz_array)/2.0
 outfmt = '%12.4f%12.4f\n'
 soutfmt = '%12.4f'
+
+if (outfile == 'density.xvg'):
+	outfile = outfile[:-4]+'_'+outname+'.xvg'
+
 outfilew = open(outfile,'w')
 print "Lz [Angstrom]", "Density [kg/m^3]\n"
 for i in range(nslices):
@@ -200,7 +206,7 @@ elif atom_flag ==True:
 print np.average(density)
 
 #PLOT RESULTS INTO FIGURE
-plt.figure(1)
-plt.plot(Lzw,density)
-plt.savefig(outfile[:-4]+'.png')
+#plt.figure(1)
+#plt.plot(Lzw,density)
+#plt.savefig(outfile[:-4]+'.png')
 
