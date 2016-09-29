@@ -1,18 +1,23 @@
-Currently working on improving the capabilities of theses scripts.
+Currently working on adding to the library and improving the capabilities of the scripts.
 
 To install:
 	>> ./install.sh
 
 REQUIREMENTS: f2py, matplotlib, numpy
 
+
+
 To execute:
 
 	-cas_density.py
-		>> ./cas_density.py -f 'xyzfile' -m 'mcffile1' 'mcffile2' ...  -o 'outfile'
-		(e.g. "./cas_density -f test.xyz -m s1.mcf s2.mcf -o out.xvg")
+		>> python cas_density.py -f 'xyzfile' -m 'mcffile1' 'mcffile2' 
+		(e.g. "python cas_density -f test.xyz -m s1.mcf s2.mcf -o out.xvg")
+
+	-cas_rdf.py
+		>> python cas_rdf.py -f xyzfile -m 'mcffile1' 'mcffile2'
 
 	-cas_plot.py
-		>> ./cas_plot.py -f 'prpfile'
+		>> python cas_plot.py -f 'prpfile'
 
 
-For more detail on scripts type see help (-h flag) in command line
+For more detail on scripts and optional flags type see help (-h flag) in command line
