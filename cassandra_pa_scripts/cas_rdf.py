@@ -13,15 +13,13 @@ import readfiles
 
 #DEFINE FUNCTIONS
 
-def obtain_indices(output_ndx):
+def obtain_atom_indices(output_ndx):
 #!Function will determine species and atom index given a cumulative atom type index
 #!Used for atom-atom RDF
 	atom_ndx = 0
 	for i in range(nspecies):
 		for j in range(molecule_info[i].natoms):
 			if output_ndx <= atom_ndx:
-				species1_ndx = i
-				atype1_ndx = j
 				return(i,j)
 			atom_ndx+=1
 
@@ -84,7 +82,6 @@ rdf = np.zeros(nbins,np.float)
 #        self.charge = array
 #        self.name = char
 #        self.MW = float
-#        self.com = float
 
 for i in range(nspecies):
 	mcffile = args.m[i]
@@ -139,10 +136,37 @@ for i in range(nspecies):
 
 
 
+#Construct matrix (# species by max # atomtype) of masses of each atom type
+
+#Find max number of atoms in a species
+for i in range(nspecies):
+	if max_natoms < molecule_info[i].natoms:
+		max_natoms = molecule_info[i].natoms
+
+#Find max number of molecules in a species
+for i in range(nframes):
+	for j in range(nspecies):
+		if max_nmols < nmolecules[i][j]:
+			max_nmols = nmolecules[i][j]
+
+#Now we will fill in the indices with the mass. If no molecule is present,
+#the mass should equal 0.
+
+#Initialize mass for each atom in the system
+atype_mass = np.zeros((max_natoms,nspecies))
+
+#Loop through species and fill masses of each atom type
+for i in range(nspecies):
+	for j in range(max_natoms):
+		try:
+			atype_mass[j][i] = float(molecule_info[i].mass[j]) #convert to kg
+		except:
+			pass
 
 
 
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #OBTAIN THE INDICES OF SPECIES OR ATOM PAIR OUTPUT
 
 #For COM RDF
@@ -184,7 +208,7 @@ Provide index of atomtype 1:
 	output1_ndx = int(raw_input())-1
 	
 	#Determine species1 index and atom1 index from user input index
-	species1_ndx, atype1_ndx = obtain_indices(output1_ndx)
+	species1_ndx, atype1_ndx = obtain_atom_indices(output1_ndx)
 
 	print """
 Provide index of atomtype 2:
@@ -198,7 +222,7 @@ Provide index of atomtype 2:
 	output2_ndx = int(raw_input())-1
 	
 	#Determine species2 index and atom2 index from user input index
-	species2_ndx, atype2_ndx = obtain_indices(output2_ndx)
+	species2_ndx, atype2_ndx = obtain_atom_indices(output2_ndx)
 	
 
 	atype1_name = molecule_info[species1_ndx].atom_type[atype1_ndx]
@@ -210,34 +234,6 @@ Provide index of atomtype 2:
 
 
 
-#Construct matrix (# species by max # atomtype) of masses of each atom type
-
-#Find max number of atoms in a species
-for i in range(nspecies):
-	if max_natoms < molecule_info[i].natoms:
-		max_natoms = molecule_info[i].natoms
-
-#Find max number of molecules in a species
-for i in range(nframes):
-	for j in range(nspecies):
-		if max_nmols < nmolecules[i][j]:
-			max_nmols = nmolecules[i][j]
-
-#Now we will fill in the indices with the mass. If no molecule is present,
-#the mass should equal 0.
-
-#Initialize mass for each atom in the system
-atype_mass = np.zeros((max_natoms,nspecies))
-
-#Loop through species and fill masses of each atom type
-for i in range(nspecies):
-	for j in range(max_natoms):
-		try:
-			atype_mass[j][i] = float(molecule_info[i].mass[j]) #convert to kg
-		except:
-			pass
-
-
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 rdf = cas_palib.cas_rdf(xyzfile,
 						nbins,
@@ -247,7 +243,8 @@ rdf = cas_palib.cas_rdf(xyzfile,
 						begin_frame,
 						end_frame,
 						Lx_array,Ly_array, Lz_array, Lmin,
-						species1_ndx, species2_ndx, 
+						species1_ndx, species2_ndx,
+						atype1_ndx, atype2_ndx, 
 						atype1_name, atype2_name,
 						atype_mass, max_natoms,max_nmols,
 						natoms, nmolecules,

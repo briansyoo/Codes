@@ -11,7 +11,8 @@
 
 SUBROUTINE CAS_DENSITY(xyzfile, nslices, nspecies, &
 						nframes, begin_frame, end_frame, &
-						Lx, Ly, Lz, &
+						binwidth, &
+						Lx, Ly, Lz, dime, &
 						atype_mass, max_natoms, &
 						natoms, nmolecules, density)
 !**************************************************************************
@@ -25,6 +26,7 @@ SUBROUTINE CAS_DENSITY(xyzfile, nslices, nspecies, &
 !		begin_frame (INT) - beginning frame index
 !		end_frame (INT) - ending_frame index
 !		Lx, Ly, Lz (ARRAY) - array containing the length of the box for each frame
+!		dime (CHAR) - dimension of axis we will perform analysis on
 !		atype_mass (MATRIX) - matrix containing masses of atoms for each species
 !		max_natoms (INT) - max number of atoms out of all species
 !		natoms (ARRAY) - array containing number of atoms for each species
@@ -34,8 +36,9 @@ SUBROUTINE CAS_DENSITY(xyzfile, nslices, nspecies, &
 !
 !**************************************************************************
 IMPLICIT NONE
-CHARACTER(120), INTENT(IN) :: xyzfile
+CHARACTER(120), INTENT(IN) :: xyzfile, dime
 INTEGER, INTENT(IN) :: nslices, nspecies, nframes, max_natoms, begin_frame, end_frame
+REAL, INTENT(IN) :: binwidth
 REAL, INTENT(IN), DIMENSION(0:nframes-1) :: Lx, Ly, Lz
 !f2py depend(nframes) :: Lx, Ly, Lz
 REAL,INTENT(IN), DIMENSION(0:max_natoms-1,0:nspecies-1) :: atype_mass
@@ -44,17 +47,21 @@ INTEGER, INTENT(IN), DIMENSION(0:nspecies-1) :: natoms
 !f2py depend(nspecies) :: natoms
 INTEGER, INTENT(IN), DIMENSION(0:nframes-1,0:nspecies-1) :: nmolecules
 !f2py depend(nframes,nspecies) :: nmolecules
-REAL, INTENT(INOUT), DIMENSION(0:nslices-1) :: density
+REAL, INTENT(INOUT), DIMENSION(0:nslices) :: density !added extra slice
 !f2py intent(in,out) :: density
 !f2py depend(nslices) :: density
 
 INTEGER :: i,j,k,l, slice
-REAL :: rxp,ryp,rzp, binwidth, binvol,conv
+REAL :: rxp,ryp,rzp, binvol,conv
+REAL, ALLOCATABLE, DIMENSION(:) :: Lout
 CHARACTER(6) :: atype
 
 conv = 1660.54!amu/Angstrom^3 to kg/m^3 conversion factor
 
 OPEN(unit=5,file=xyzfile)
+
+ALLOCATE(Lout(0:nframes-1))
+
 
 !loop over #frames
 DO i=0,end_frame-1
@@ -62,9 +69,6 @@ DO i=0,end_frame-1
 	READ(*,*)
 	READ(*,*)
 
-	!define binwidth in the frame
-	binwidth = REAL(Lz(i)/nslices)
-	binvol = REAL(nslices/(Lx(i)*Ly(i)*Lz(i)))
 	!loop over number of species
 	DO j=0,nspecies-1
 		!loop over number of molecules
@@ -72,7 +76,35 @@ DO i=0,end_frame-1
 			DO l=0, natoms(j)-1 
 				READ (*,*) atype, rxp,ryp,rzp
 				IF (i>=begin_frame) THEN
-					slice = ABS(NINT((rzp+Lz(i)/2.0)/binwidth))
+					binvol = REAL(nslices/(Lx(i)*Ly(i)*Lz(i)))
+
+					!wrap coordinates
+					IF (rxp < -Lx(i)/2.0) THEN
+						rxp = rxp + Lx(i)
+					ELSEIF (rxp > Lx(i)/2.0) THEN
+						rxp = rxp - Lx(i)
+					ENDIF
+					IF (ryp < -Ly(i)/2.0) THEN
+						ryp = ryp + Ly(i)
+					ELSEIF (ryp > Ly(i)/2.0) THEN
+						ryp = ryp - Ly(i)
+					END IF
+					IF (rzp < -Lz(i)/2.0) THEN
+						rzp = rzp + Lz(i)
+					ELSEIF (rzp > Lz(i)/2.0) THEN
+						rzp = rzp - Lz(i)
+					END IF 
+					
+					!determine slice index					
+					IF (dime == 'Z' .OR. dime == 'z') THEN
+						slice = NINT((rzp+REAL(Lz(i)/2.0))/binwidth)
+					ELSEIF (dime == 'Y' .OR. dime =='y') THEN
+						slice = NINT((ryp+REAL(Ly(i)/2.0))/binwidth)
+					ELSEIF (dime == 'X' .OR. dime =='x') THEN
+						slice = NINT((rxp+REAL(Lx(i)/2.0))/binwidth)
+					END IF
+
+
 					density(slice) = density(slice)+1.0*binvol *atype_mass(l,j)
 				END IF
 			END DO
@@ -85,6 +117,7 @@ END DO
 CLOSE(unit = 5)
 density = density/(end_frame-begin_frame)*conv
 
+
 END SUBROUTINE
 
 
@@ -93,6 +126,7 @@ SUBROUTINE CAS_RDF(xyzfile,nbins,binwidth,nspecies,&
 					nframes,begin_frame,end_frame,&
 					Lx,Ly,Lz,Lmin,&
 					species1_ndx, species2_ndx, &
+					atype1_ndx, atype2_ndx, &
 					atype1_name, atype2_name, &
 					atype_mass,max_natoms,max_nmols,natoms,&
 					nmolecules,com_flag, rdf)
@@ -124,7 +158,7 @@ SUBROUTINE CAS_RDF(xyzfile,nbins,binwidth,nspecies,&
 IMPLICIT NONE
 CHARACTER(120), INTENT(IN) :: xyzfile
 INTEGER, INTENT(IN) :: nbins, nspecies, nframes, begin_frame, end_frame, &
-						species1_ndx, species2_ndx, max_natoms, max_nmols
+						species1_ndx, species2_ndx, atype1_ndx, atype2_ndx, max_natoms, max_nmols
 CHARACTER(6), INTENT(IN) :: atype1_name, atype2_name
 REAL, INTENT(IN) :: binwidth, Lmin
 REAL, INTENT(IN), DIMENSION(0:nframes-1) :: Lx, Ly, Lz
@@ -321,12 +355,12 @@ ELSE
 			DO k=0,nmolecules(i,j)-1
 				DO l=0,natoms(j)-1
 					READ (*,*) atype, rxp,ryp,rzp
-					IF (atype1_name == atype) THEN
+					IF (atype1_name == atype .AND. atype1_ndx == l) THEN
 						atype1_rx(ia) = rxp
 						atype1_ry(ia) = ryp
 						atype1_rz(ia) = rzp
 						ia = ia+1
-					ELSEIF (atype2_name == atype) THEN
+					ELSEIF (atype2_name == atype .AND. atype2_ndx == l) THEN
 						atype2_rx(ja) = rxp
 						atype2_ry(ja) = ryp
 						atype2_rz(ja) = rzp
@@ -340,7 +374,7 @@ ELSE
 		!if we are obtaining rdf of same atomtype, we have not yet
 		!store its coordinates. 
 		!atomtype 2 coordinates is the same as atomtype1 coordinates
-		IF (atype1_name == atype2_name) THEN
+		IF (atype1_name == atype2_name .AND. atype1_ndx == atype2_ndx) THEN
 			atype2_rx = atype1_rx
 			atype2_ry = atype1_ry
 			atype2_rz = atype1_rz
@@ -438,6 +472,92 @@ END DO
 
 
 END SUBROUTINE
+
+!SUBROUTINE CAS_ANGLE(xyzfile,nspecies, &
+!					nframes,begin_frame,end_frame, &
+!					Lx,Ly,Lz,Lmin, &
+!					species1_ndx, species2_ndx, species3_ndx, &
+!					atype1_name, atype2_name, atype3_name, &
+!					atype_mass,max_natoms,max_nmols,natoms, &
+!					nmolecules,com_flag, angle)
+!!**************************************************************************
+!!Routine to generate the radial distribution function for given pair indices
+!!
+!! 		Input Variables: 
+!!		xyzfile (INT) - coordinate file containing all frames
+!!		nbins (INT) - number of bins
+!!		binwidth (REAL) - based on minimum box length
+!!		nspecies (INT) - number of species contained in the system
+!!		nframes (INT) - number of frames we are analyzing
+!!		begin_frame (INT) - beginning frame index
+!!		end_frame (INT) - ending_frame index
+!!		Lx, Ly, Lz (ARRAY) - box lengths 
+!!		Lmin (REAL) - global minimum box length from Lx,Ly, and Lz
+!!		species1_ndx, species2_ndx (INT) - species index
+!!		atype1_name, atype_name (CHAR) -name of atomtype
+!!		atype_mass (MATRIX) - contains masses of each atomtype for each species
+!!		max_natoms (INT) - max number of atoms out of atoms in species
+!!		max_nmols (INT) - max number of molecules out of molecules in species
+!!		natoms (ARRAY) - number of atoms in each species
+!!		nmolecules (MATRIX) - array containing number of molecules for each 
+!!		species in each frame
+!!		com_flag (LOGICAL) - flag determining analysis: com-com RDF or atom-atom RDF
+!!		angle (output) - rdf array
+!!
+!!**************************************************************************
+!IMPLICIT NONE
+!CHARACTER(120), INTENT(IN) :: xyzfile
+!INTEGER, INTENT(IN) :: nslices, nspecies, nframes, max_natoms, begin_frame, end_frame
+!REAL, INTENT(IN), DIMENSION(0:nframes-1) :: Lx, Ly, Lz
+!!f2py depend(nframes) :: Lx, Ly, Lz
+!REAL,INTENT(IN), DIMENSION(0:max_natoms-1,0:nspecies-1) :: atype_mass
+!!f2py depend(max_natoms,nspecies) :: atype_mass
+!INTEGER, INTENT(IN), DIMENSION(0:nspecies-1) :: natoms
+!!f2py depend(nspecies) :: natoms
+!INTEGER, INTENT(IN), DIMENSION(0:nframes-1,0:nspecies-1) :: nmolecules
+!!f2py depend(nframes,nspecies) :: nmolecules
+!REAL, INTENT(INOUT), DIMENSION(0:nslices-1) :: angle
+!!f2py intent(in,out) :: angle
+!!f2py depend(nslices) :: angle
+!
+!INTEGER :: i,j,k,l, slice
+!REAL :: rxp,ryp,rzp, binwidth, binvol,conv
+!CHARACTER(6) :: atype
+!
+!conv = 1660.54!amu/Angstrom^3 to kg/m^3 conversion factor
+!
+!OPEN(unit=5,file=xyzfile)
+!
+!!loop over #frames
+!DO i=0,end_frame-1
+!	!first 2 lines is molecule #, and newline
+!	READ(*,*)
+!	READ(*,*)
+!
+!	!define binwidth in the frame
+!	binwidth = REAL(Lz(i)/nslices)
+!	binvol = REAL(nslices/(Lx(i)*Ly(i)*Lz(i)))
+!	!loop over number of species
+!	DO j=0,nspecies-1
+!		!loop over number of molecules
+!		DO k=0,nmolecules(i,j)-1
+!			DO l=0, natoms(j)-1 
+!				READ (*,*) atype, rxp,ryp,rzp
+!				IF (i>=begin_frame) THEN
+!					slice = ABS(NINT((rzp+Lz(i)/2.0)/binwidth))
+!					density(slice) = density(slice)+1.0*binvol *atype_mass(l,j)
+!				END IF
+!			END DO
+!		END DO
+!
+!	END DO
+!
+!END DO
+!
+!CLOSE(unit = 5)
+!angle = angle/(end_frame-begin_frame)*conv
+!
+!END SUBROUTINE
 
 
 

@@ -36,7 +36,7 @@ nslices = int(args.nsl)
 nspecies = len(args.m)
 xyzfile = args.f
 atom_flag = args.atom
-
+dim = args.dim
 if args.H == 'default':
 	Hfile = xyzfile[:-4]+'.H'
 else:
@@ -52,7 +52,7 @@ molecule_info = []
 natoms=[]
 max_natoms = 0
 calc_tot_flag = False
-density = np.zeros(nslices,np.float)
+density = np.zeros(nslices+1,np.float)
 
 #READ MCF FILES
 #create an object of molecule_info class for each species containing:
@@ -65,7 +65,6 @@ density = np.zeros(nslices,np.float)
 #        self.charge = array
 #        self.name = char
 #        self.MW = float
-#        self.com = float
 
 for i in range(nspecies):
 	mcffile = args.m[i]
@@ -80,12 +79,20 @@ for i in range(nspecies):
 #for each snapshot. 
 #Note: Matrices are flattened
 H = readfiles.read_H_file(Hfile,nspecies)
-Lx_array = H[0]
-Ly_array = H[1]
-Lz_array = H[2]
+Lx = H[0]
+Ly = H[1]
+Lz = H[2]
 
 #Take the binwidth from the the average length over all frames divided by nslices
-binwidth = np.mean(Lz_array[begin_frame:end_frame])/nslices
+if (dim == 'Z' or dim == 'z'):
+	binwidth = np.max(Lz[begin_frame:end_frame])/(nslices)
+	Lout = Lz
+elif (dim == 'Y' or dim == 'y'):
+	binwidth = np.max(Ly[begin_frame:end_frame])/(nslices)
+	Lout = Ly
+elif (dim == 'X' or dim == 'x'):
+	binwidth = np.max(Lx[begin_frame:end_frame])/(nslices)
+	Lout = Lx
 
 #Store number of frames
 nframes = int(len(H[3])/nspecies)
@@ -180,30 +187,37 @@ density = cas_palib.cas_density(xyzfile,
 								nframes,
 								begin_frame,
 								end_frame,
-								Lx_array,Ly_array, Lz_array,
+								binwidth,
+								Lx,Ly, Lz,dim,
 								atype_mass,max_natoms, 
 								natoms, nmolecules_array,density)
 
 
 #PRINT RESULTS
-Lzw = np.arange(0,nslices,1)*np.average(Lz_array)/nslices -np.average(Lz_array)/2.0
+
+Loutw = np.arange(0,len(density),1)*np.max(Lout)/(nslices) -np.max(Lout)/2.0
+
 outfmt = '%12.4f%12.4f\n'
 soutfmt = '%12.4f'
+
+
 
 if (outfile == 'density.xvg'):
 	outfile = outfile[:-4]+'_'+outname+'.xvg'
 
 outfilew = open(outfile,'w')
-print "Lz [Angstrom]", "Density [kg/m^3]\n"
-for i in range(nslices):
-	outfilew.write(outfmt%(Lzw[i],density[i]))
-	print soutfmt%Lzw[i],soutfmt%density[i]
+print "L"+dim,"[Angstrom]", "Density [kg/m^3]\n"
+for i in range(len(density)):
+	outfilew.write(outfmt%(Loutw[i],density[i]))
+	print soutfmt%Loutw[i],soutfmt%density[i]
+
 outfilew.close()
 if atom_flag ==False:
 	print "Average Density [kg/m^3]:\n"
 elif atom_flag ==True:
 	print "Average Density [#/m^3]:\n"
 print np.average(density)
+
 
 #PLOT RESULTS INTO FIGURE
 #plt.figure(1)
