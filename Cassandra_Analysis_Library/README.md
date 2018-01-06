@@ -17,7 +17,7 @@
 Cassandra Analysis Library
 version 0.1
 
-Last Updated 1/6/2018 (BY): restructured library. Code is currently broken.
+Last Updated 1/6/2018 (BY): Restructured library to include egg installation. Code is currently broken.
 
 
 Currently working on adding to the library and improving the capabilities of the scripts.
