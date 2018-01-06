@@ -1,5 +1,8 @@
-Currently working on adding to the library and improving the capabilities of the scripts.
+Cassandra Analysis Library Program
 
+Last Updated (BY) 1/6/2018: restructured library.
+
+Currently working on adding to the library and improving the capabilities of the scripts.
 
 REQUIREMENTS: f2py, matplotlib, numpy
 
