@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Cassandra Classes
 # This script contains all the functions required to read in the input/mcf files.
 # It gets called from the highest level scripts.
