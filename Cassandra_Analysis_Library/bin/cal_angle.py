@@ -6,10 +6,10 @@ from argparse import RawTextHelpFormatter
 import matplotlib.pyplot as plt
 
 # F2PY Shared Objects
-import cas_palib
+import CassandraAnalysisLibrary.cal_palib
 # Cassandra Classes
-from molecule_info import *
-import readfiles 
+from CassandraAnalysisLibrary.molecule_info import *
+import CassandraAnalysisLibray.readfiles 
 
 #DEFINE FUNCTIONS
 
@@ -27,7 +27,8 @@ def obtain_angle_indices(output_ndx):
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-parser = argparse.ArgumentParser('''*** CASSANDRA Angle Distribution Function Analysis Tool ***
+parser = argparse.ArgumentParser(
+'''*** CASSANDRA Angle Distribution Function Analysis Tool ***
 
 Example Usage:
 

@@ -6,10 +6,10 @@ from argparse import RawTextHelpFormatter
 import matplotlib.pyplot as plt
 
 # F2PY Shared Objects
-import cas_palib
+import CassandraAnalysisLibrary.cal_palib
 # Cassandra Classes
-from molecule_info import *
-import readfiles 
+from CassandraAnalysisLibrary.molecule_info import *
+import CassandraAnalysisLibray.readfiles 
 
 #DEFINE FUNCTIONS
 
