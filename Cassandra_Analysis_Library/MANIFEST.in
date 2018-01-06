@@ -1,2 +1,8 @@
 include README.md
-include CassandraAnalysisLibrary/*.f90 
+include install.sh
+include CassandraAnalysisLibrary/*.f90
+include Example/*.mcf
+include Example/*.H
+include Example/*.xyz
+include Example/*.prp
+
