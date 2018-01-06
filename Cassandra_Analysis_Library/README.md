@@ -1,6 +1,5 @@
 <!---
-
-  ____    _    ____ ____    _    _   _ ____  ____      _    
+   ____    _    ____ ____    _    _   _ ____  ____      _    
   / ___|  / \  / ___/ ___|  / \  | \ | |  _ \|  _ \    / \   
  | |     / _ \ \___ \___ \ / _ \ |  \| | | | | |_) |  / _ \  
  | |___ / ___ \ ___) |__) / ___ \| |\  | |_| |  _ <  / ___ \ 
@@ -18,7 +17,8 @@
 Cassandra Analysis Library
 version 0.1
 
-Last Updated (BY) 1/6/2018: restructured library.
+Last Updated 1/6/2018 (BY): restructured library. Code is currently broken.
+
 
 Currently working on adding to the library and improving the capabilities of the scripts.
 
