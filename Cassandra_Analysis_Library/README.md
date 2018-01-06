@@ -31,7 +31,7 @@ Addtional tools in progress:
 
 To install:
 	>> ./install.sh
-
+	>> python setup.py install
 
 
 To execute:
