@@ -14,7 +14,7 @@ setup(name='funniest',
 	author='Brian Yoo',
 	author_email='briansyoo@gmail.com',
 	license='MIT',
-	scripts=['bin/cal_angle.py','bin/cal_rdf.py','bin/cal_angle.py','bin/cal_dihedral.py'],
+	scripts=['bin/cal_angle.py','bin/cal_rdf.py','bin/cal_angle.py','bin/cal_dihedral.py','bin/cal_plot.py'],
 	install_requires=[
 	'numpy','matplotlib',
 	  ],
