@@ -25,8 +25,8 @@ Currently working on adding to the library and improving the capabilities of the
 REQUIREMENTS: f2py, matplotlib, numpy
 
 Addtional tools in progress:
-	cas_cluster - Stillinger custer analysis
-	cas_combine_boxes - creates single xyz file from GEMC xyz files. 
+	cal_cluster - Stillinger custer analysis
+	cal_combine_boxes - creates single xyz file from GEMC xyz files. 
 		(Creating this since there are some issues with topotools.)
 
 To install:
@@ -36,20 +36,20 @@ To install:
 
 To execute:
 
-	-cas_density.py
-		>> python cas_density.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'.mcf ... 
+	-cal_density.py
+		>> python cal_density.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'.mcf ... 
 
-	-cas_rdf.py
-		>> python cas_rdf.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
+	-cal_rdf.py
+		>> python cal_rdf.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
 
-	-cas_angle.py
-		>> python cas_angle.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
+	-cal_angle.py
+		>> python cal_angle.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
 	
-	cas_dihedral.py
-		>> python cas_dihedral.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
+	cal_dihedral.py
+		>> python cal_dihedral.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
 
-	-cas_plot.py
-		>> python cas_plot.py -f 'prpfilename'.prp
+	-cal_plot.py
+		>> python cal_plot.py -f 'prpfilename'.prp
 
 
 (To execute without having to type python, add the path to python in the shebang - first line
