@@ -7,7 +7,7 @@ if sys.argv[-1] == 'readme':
     sys.exit()
 
 
-setup(name='funniest',
+setup(name='CassandraAnalysisLibrary',
 	version='0.1',
 	description='Cassandra Analysis Library (CAL) for post analysis of CASSANDRA output files.',
 	url='https://github.com/briansyoo/Codes',
