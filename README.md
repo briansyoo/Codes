@@ -1,5 +1,6 @@
 # Welcome!
-## This repository contains mainly code I worked on during my time at grad school.
+
+This repository contains mainly code I worked on during my time at grad school.
 
 ### CassandraAnalysisLibrary
 Analysis Toolkit for CASSANDRA, an open source Monte Carlo code developed at the University of Notre Dame. For more information on CASSANDRA, please visit https://cassandra.nd.edu/
