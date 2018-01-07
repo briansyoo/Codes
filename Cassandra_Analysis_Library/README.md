@@ -30,39 +30,47 @@ Currently working on adding to the library and improving the capabilities of the
 REQUIREMENTS: f2py, matplotlib, numpy
 
 
-================================
-Installation (root access)
-================================
+#================================
+#Installation (root access)
+#================================
 
 To install:
+
 	1. Compile fortran subroutines
+
 	>> ./install.sh
 
-	2. Egg installation 
+	2. Installation with setup.py
+
 	>> python setup.py install
 
-================================
-Installation (without root access)
-================================
+#================================
+#Installation (without root access)
+#================================
 
 To install:
+
 	1. Compile fortran subroutines
+
 	>> ./install.sh
 
 	2. Add following lines to .bashrc file (setup of local env)
+
 	PYTHONPATH="${PYTHONPATH}:path/to/usr/.local/lib/python/"
 	export PATH=path/to/usr/.local/bin:$PATH
 
 	3. Source .bashrc file
+
 	>> source .bashrc
 
-	4. Exceute installation with Python Egg
+	4. Exceute installation with setup.py
+
 	>> python setup.py install --home=~/.local
 
 
-================================
-Example Usage
-================================
+#================================
+#Example Usage
+#================================
 NOTE: Make sure the mcf files are in the correct order. Otherwise these scripts will not
 work properly. As of now, there is no check for correctness in the order of the mcf files.
 
