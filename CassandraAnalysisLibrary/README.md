@@ -18,13 +18,12 @@
 -->
 # Welcome to Cassandra Analysis Library version 0.1!
 
-Last Updated 1/6/2018 (BY): Restructured library to include Python egg installation. Code is currently broken.
+
+Last Updated 1/6/2018: Restructured library to include Python egg installation. Code is currently broken.
 
 Addtional tools in progress:
 
 	cal_cluster - Stillinger custer analysis
-	cal_combine_boxes - creates single xyz file from GEMC xyz files. 
-		(Creating this since there are some issues with topotools.)
 
 Currently working on adding to the library and improving the capabilities of the scripts.
 Future implementation will implement machine learning algorithms from scikitlearn.
