@@ -29,7 +29,7 @@ parser = argparse.ArgumentParser('''*** CASSANDRA Radial Distribution Function A
 
 Example Usage:
 
-	python cas_rdf.py -f test.xyz -m s1.mcf s2.mcf (-bins 100) (-o rdf.xvg)
+	python cal_rdf.py -f test.xyz -m s1.mcf s2.mcf (-bins 100) (-o rdf.xvg)
 
 ''',formatter_class=RawTextHelpFormatter)
 parser.add_argument('-f',action='store',help ='Trajectory File (xyz format)')
@@ -235,7 +235,7 @@ Provide index of atomtype 2:
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-rdf = cas_palib.cas_rdf(xyzfile,
+rdf = cal_palib.cal_rdf(xyzfile,
 						nbins,
 						binwidth,
 						nspecies,

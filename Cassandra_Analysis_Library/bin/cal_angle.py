@@ -32,7 +32,7 @@ parser = argparse.ArgumentParser(
 
 Example Usage:
 
-	python cas_angle.py -f test.xyz -m s1.mcf s2.mcf (-deg 1) (-o angle.xvg)
+	python cal_angle.py -f test.xyz -m s1.mcf s2.mcf (-deg 1) (-o angle.xvg)
 
 ''',formatter_class=RawTextHelpFormatter)
 parser.add_argument('-f',action='store',help ='Trajectory File (xyz format)')
@@ -197,7 +197,7 @@ print "Atoms",atom1_type+",",atom2_type+",","and",atom3_type,"will be analyzed.\
 
 
 ##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-angle = cas_palib.cas_angle(xyzfile,
+angle = cal_palib.cal_angle(xyzfile,
 						nspecies,
 						nslices,
 						nframes,

@@ -31,7 +31,7 @@ parser = argparse.ArgumentParser('''*** CASSANDRA Dihedral Distribution Function
 
 Example Usage:
 
-	python cas_dihedral.py -f test.xyz -m s1.mcf s2.mcf (-deg 1) (-o dihedral.xvg)
+	python cal_dihedral.py -f test.xyz -m s1.mcf s2.mcf (-deg 1) (-o dihedral.xvg)
 
 ''',formatter_class=RawTextHelpFormatter)
 parser.add_argument('-f',action='store',help ='Trajectory File (xyz format)')
@@ -208,7 +208,7 @@ print "Atoms",atom1_type+",",atom2_type+",",atom3_type+",","and",atom4_type,"wil
 
 
 ##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-dihedral = cas_palib.cas_dihedral(xyzfile,nspecies, nslices,
+dihedral = cal_palib.cal_dihedral(xyzfile,nspecies, nslices,
 						nframes, begin_frame, end_frame,
 						Lx,Ly, Lz, 
 						species_ndx,  

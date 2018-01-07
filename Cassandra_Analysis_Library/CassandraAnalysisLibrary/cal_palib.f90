@@ -1,5 +1,5 @@
-!CASANDRA POST ANALYSIS LIBRARY
-!FILE: cas_palib.f90
+!CALANDRA POST ANALYSIS LIBRARY
+!FILE: cal_palib.f90
 !
 !**************************************************************************
 ! This library contains all of the analysis codes called by each python
@@ -9,7 +9,7 @@
 ! Writte by: Brian Yoo
 !**************************************************************************
 
-SUBROUTINE CAS_DENSITY(xyzfile, nslices, nspecies, &
+SUBROUTINE CAL_DENSITY(xyzfile, nslices, nspecies, &
 						nframes, begin_frame, end_frame, &
 						binwidth, &
 						Lx, Ly, Lz, dime, &
@@ -122,7 +122,7 @@ END SUBROUTINE
 
 
 
-SUBROUTINE CAS_RDF(xyzfile,nbins,binwidth,nspecies,&
+SUBROUTINE CAL_RDF(xyzfile,nbins,binwidth,nspecies,&
 					nframes,begin_frame,end_frame,&
 					Lx,Ly,Lz,Lmin,&
 					species1_ndx, species2_ndx, &
@@ -470,7 +470,7 @@ END DO
 
 END SUBROUTINE
 
-SUBROUTINE CAS_ANGLE(xyzfile,nspecies, nslices, &
+SUBROUTINE CAL_ANGLE(xyzfile,nspecies, nslices, &
 					nframes,begin_frame,end_frame, &
 					Lx,Ly,Lz, &
 					species_ndx, &
@@ -570,7 +570,7 @@ angle = angle/(end_frame-begin_frame)
 !
 END SUBROUTINE
 
-SUBROUTINE CAS_DIHEDRAL(xyzfile,nspecies, nslices, &
+SUBROUTINE CAL_DIHEDRAL(xyzfile,nspecies, nslices, &
 					nframes,begin_frame,end_frame, &
 					Lx,Ly,Lz, &
 					species_ndx, &

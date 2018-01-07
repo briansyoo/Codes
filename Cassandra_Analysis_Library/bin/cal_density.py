@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser('''*** CASSANDRA Density Profile Analysis Tool 
 
 Example Usage:
 
-	python cas_density -f test.xyz -m s1.mcf s2.mcf (-nsl 100) (-o density.xvg)
+	python cal_density -f test.xyz -m s1.mcf s2.mcf (-nsl 100) (-o density.xvg)
 
 ''',formatter_class=RawTextHelpFormatter)
 parser.add_argument('-f',action='store',help ='Trajectory File (xyz format)')
@@ -181,7 +181,7 @@ if not calc_tot_flag:
 
 
 #CALCULATE DENSITY PROFILE FROM FORTRAN SUBROUTINE
-density = cas_palib.cas_density(xyzfile,
+density = cal_palib.cal_density(xyzfile,
 								nslices,
 								nspecies,
 								nframes,

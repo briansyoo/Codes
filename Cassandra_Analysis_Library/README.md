@@ -29,7 +29,7 @@ Addtional tools in progress:
 Currently working on adding to the library and improving the capabilities of the scripts.
 Future implementation will implement machine learning algorithms from scikitlearn.
 
-REQUIREMENTS: f2py, matplotlib, numpy
+REQUIREMENTS: gcc, gfortran, python2.7 (recommended), f2py, matplotlib, numpy
 
 
 To install with root access:
