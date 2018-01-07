@@ -73,21 +73,21 @@ To Execute:
 
 	Density Profile Analysis
 
-		>>cal_density.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'.mcf ... 
+	>>cal_density.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'.mcf ... 
 
 	Radial Distribution Analysis
 
-		>>cal_rdf.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
+	>>cal_rdf.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
 
 	Angle Distribution Analysis
 
-		>>cal_angle.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
+	>>cal_angle.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
 	
 	Dihedral Angle Analysis
 
-		>>cal_dihedral.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
+	>>cal_dihedral.py -f 'xyzfilename'.xyz -m 'species1filename'.mcf 'species2filename'mcf ...
 
 	Time Series Plot Analysis
 
-		>>cal_plot.py -f 'prpfilename'.prp
+	>>cal_plot.py -f 'prpfilename'.prp
 
