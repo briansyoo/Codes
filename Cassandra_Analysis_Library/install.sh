@@ -1,1 +1,2 @@
-f2py -c -m cas_palib cas_palib.f90
+#!/bin/bash
+f2py -c -m cal_palib CassandraAnalysisLibrary/cal_palib.f90
