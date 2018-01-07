@@ -16,7 +16,7 @@
                                |___/             
 ==============================================================
 -->
-# Welcome to Cassandra Analysis Library (version 0.1)!
+# Welcome to Cassandra Analysis Library version 0.1!
 
 Last Updated 1/6/2018 (BY): Restructured library to include Python egg installation. Code is currently broken.
 
