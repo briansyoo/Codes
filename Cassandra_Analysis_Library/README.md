@@ -32,7 +32,7 @@ Future implementation will implement machine learning algorithms from scikitlear
 REQUIREMENTS: gcc, gfortran, python2.7 (recommended), f2py, matplotlib, numpy
 
 
-To install with root access:
+## To install with root access:
 
 	1. Compile fortran subroutines
 
@@ -42,7 +42,7 @@ To install with root access:
 
 	>> python setup.py install
 
-To install without root access:
+## To install without root access:
 
 	1. Compile fortran subroutines
 
@@ -62,7 +62,7 @@ To install without root access:
 	>> python setup.py install --home=~/.local
 
 
-Example Usage
+## Example Usage
 
 NOTE: Make sure the mcf files are in the correct order. Otherwise these scripts will not
 work properly. As of now, there is no check for correctness in the order of the mcf files.
@@ -71,7 +71,7 @@ For more detail on these scripts and on additional optional flags execute the sc
 help flag (-h) in the command line
 
 
-To Execute:
+### To Execute:
 
 	Density Profile Analysis
 
