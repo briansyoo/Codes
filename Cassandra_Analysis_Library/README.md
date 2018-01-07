@@ -30,9 +30,11 @@ Currently working on adding to the library and improving the capabilities of the
 REQUIREMENTS: f2py, matplotlib, numpy
 
 
-#================================
+================================
+
 #Installation (root access)
-#================================
+
+================================
 
 To install:
 
@@ -44,9 +46,11 @@ To install:
 
 	>> python setup.py install
 
-#================================
+================================
+
 #Installation (without root access)
-#================================
+
+================================
 
 To install:
 
@@ -68,9 +72,8 @@ To install:
 	>> python setup.py install --home=~/.local
 
 
-#================================
 #Example Usage
-#================================
+
 NOTE: Make sure the mcf files are in the correct order. Otherwise these scripts will not
 work properly. As of now, there is no check for correctness in the order of the mcf files.
 
@@ -78,7 +81,7 @@ For more detail on these scripts and on additional optional flags execute the sc
 help flag (-h) in the command line
 
 
-To Execute:
+#To Execute:
 
 	Density Profile Analysis
 
